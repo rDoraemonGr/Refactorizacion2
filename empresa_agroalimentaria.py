@@ -26,8 +26,8 @@ class Producto:
         self.peso = peso
         self.medida = medida
 
-    def __str__(self):
-        return f"Caducidad: {self.fecha_caducidad} - Lote: {self.numero_lote} - Peso: {self.peso} - Medida: {self.medida}"
+    def __str__(self): # Imprimimos los datos mas detalladamente
+        return f"Caducidad: {self.fecha_caducidad} | Lote: {self.numero_lote} | Peso: {self.peso} kg | Medida: {self.medida}"
 
 class Frescos(Producto):
     def __init__(self, fecha_caducidad, numero_lote, fecha_envasado, pais_origen):
@@ -35,17 +35,18 @@ class Frescos(Producto):
         self.fecha_envasado = fecha_envasado
         self.pais_origen = pais_origen
 
-    def __str__(self):
-        return super().__str__()
+    def __str__(self):  # Imprimimos los datos mas detalladamente
+        return f"{super().__str__()} | Envasado: {self.fecha_envasado} | Origen: {self.pais_origen}"
+
     
 class Refrigerados(Producto):
     def __init__(self, fecha_caducidad, numero_lote, codigo_organismo_supervision):
         super().__init__(fecha_caducidad, numero_lote)
         self.codigo_organismo_supervision = codigo_organismo_supervision  
     
-    def __str__(self):
-        return super().__str__()
-
+    def __str__(self):  # Imprimimos los datos mas detalladamente
+        return f"{super().__str__()} | Código supervisión: {self.codigo_organismo_supervision}"
+    
 class Congelados(Producto):
     def __init__(self, fecha_caducidad, numero_lote, temperatura_recomendada):
         super().__init__(fecha_caducidad, numero_lote)
