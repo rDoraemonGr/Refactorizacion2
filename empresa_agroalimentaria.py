@@ -63,11 +63,51 @@ class Congelados(Producto):
     def calcular_coste_envio(self):  # Implemento método de calcular coste de envio
         return super().calcular_coste_envio() + 5
 
+def pedir_datos_basicos(): # Función para pedir los datos básicos
+    fecha_caducidad = input("Fecha de caducidad: ")
+    numero_lote = input("Número de lote: ")
+    peso = float(input("Peso (kg): "))
+    medida = input("Medidas (cm): ")
+    return fecha_caducidad, numero_lote, peso, medida
+
+def eliminar_producto(lista):  # Función de eliminación de producto
+    if not lista:
+        print("No hay productos para eliminar.")
+        return
+    for i, prod in enumerate(lista):
+        print(f"{i + 1}. {prod}")
+    try:
+        pos = int(input("¿Qué producto desea eliminar? (número): ")) - 1
+        if 0 <= pos < len(lista):
+            eliminado = lista.pop(pos)
+            print(f"Producto eliminado: {eliminado}")
+        else:
+            print("Índice fuera de rango.")
+    except ValueError:
+        print("Entrada inválida.")
+
+
+def obtener_coste_envio(lista):  # Función para mostrar el coste de envio
+    if not lista:
+        print("No hay productos para calcular el envío.")
+        return
+    for i, prod in enumerate(lista):
+        print(f"{i + 1}. {prod}")
+    try:
+        pos = int(input("Seleccione el producto: ")) - 1
+        if 0 <= pos < len(lista):
+            coste = lista[pos].calcular_coste_envio()
+            print(f"Coste de envío: {coste:.2f} €")
+        else:
+            print("Índice inválido.")
+    except ValueError:
+        print("Entrada inválida.")
+
+
 def main():
     productos_frescos = []
     productos_refrigerados = []
     productos_congelados = []
-    lista_productos_general = []
 
     while True:
         print("Gestión de Productos")
@@ -77,59 +117,64 @@ def main():
         print("4. Mostrar productos frescos")
         print("5. Mostrar productos refrigerados")
         print("6. Mostrar productos congelados")
-        print("7. Salir")
+        print("7. Eliminar producto fresco")                # Opción para eliminar un tipo de producto
+        print("8. Eliminar producto refrigerado")           # Opción para eliminar un tipo de producto
+        print("9. Eliminar producto congelado")             # Opción para eliminar un tipo de producto
+        print("10. Ver coste envío producto fresco")        # Opción para ver el coste de envío de un tipo de producto
+        print("11. Ver coste envío producto refrigerado")   # Opción para ver el coste de envío de un tipo de producto
+        print("12. Ver coste envío producto congelado")     # Opción para ver el coste de envío de un tipo de producto
+        print("13. Salir")
+
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
-            fecha_caducidad = input("Fecha de caducidad: ")
-            numero_lote = input("Número de lote: ")
-            fecha_envasado = input("Fecha de envasado: ")
-            pais_origen = input("País de origen: ")
-            productos_frescos.append(Frescos(fecha_caducidad, numero_lote, fecha_envasado, pais_origen))
+            datos = pedir_datos_basicos()
+            fecha_env = input("Fecha de envasado: ")
+            pais = input("País de origen: ")
+            productos_frescos.append(Frescos(*datos, fecha_env, pais))
 
         elif opcion == "2":
-            fecha_caducidad = input("Fecha de caducidad: ")
-            numero_lote = input("Número de lote: ")
-            codigo_organismo = input("Código de organismo de supervisión: ")
-            productos_refrigerados.append(Refrigerados(fecha_caducidad, numero_lote, codigo_organismo))
+            datos = pedir_datos_basicos()
+            cod = input("Código de supervisión: ")
+            productos_refrigerados.append(Refrigerados(*datos, cod))
 
         elif opcion == "3":
-            fecha_caducidad = input("Fecha de caducidad: ")
-            numero_lote = input("Número de lote: ")
-            temperatura = input("Temperatura recomendada: ")
-            productos_congelados.append(Congelados(fecha_caducidad, numero_lote, temperatura))
+            datos = pedir_datos_basicos()
+            temp = input("Temperatura recomendada: ")
+            productos_congelados.append(Congelados(*datos, temp))
 
         elif opcion == "4":
             print("--- Productos Frescos ---")
-            if productos_frescos:
-                for p in productos_frescos:
-                    print(f"Fecha de caducidad: {p.fecha_caducidad} - Número de lote: {p.numero_lote} - "
-                          f"Fecha de envasado: {p.fecha_envasado} - País de origen: {p.pais_origen}")
-            else:
-                print("No hay productos frescos registrados.")
+            for p in productos_frescos:
+                print(p)
 
         elif opcion == "5":
             print("--- Productos Refrigerados ---")
-            if productos_refrigerados:
-                for p in productos_refrigerados:
-                    print(f"Fecha de caducidad: {p.fecha_caducidad} - Número de lote: {p.numero_lote} - "
-                          f"Código de supervisión: {p.codigo_organismo_supervision}")
-            else:
-                print("No hay productos refrigerados registrados.")
+            for p in productos_refrigerados:
+                print(p)
 
         elif opcion == "6":
             print("--- Productos Congelados ---")
-            if productos_congelados:
-                for p in productos_congelados:
-                    print(f"Fecha de caducidad: {p.fecha_caducidad} - Número de lote: {p.numero_lote} - "
-                          f"Temperatura recomendada: {p.temperatura_recomendada}°C")
-            else:
-                print("No hay productos congelados registrados.")
+            for p in productos_congelados:
+                print(p)
 
         elif opcion == "7":
+            eliminar_producto(productos_frescos)
+        elif opcion == "8":
+            eliminar_producto(productos_refrigerados)
+        elif opcion == "9":
+            eliminar_producto(productos_congelados)
+
+        elif opcion == "10":
+            obtener_coste_envio(productos_frescos)
+        elif opcion == "11":
+            obtener_coste_envio(productos_refrigerados)
+        elif opcion == "12":
+            obtener_coste_envio(productos_congelados)
+
+        elif opcion == "13":
             print("Saliendo del programa...")
             break
-
         else:
             print("Opción no válida, intentalo de nuevo.")
 main()
