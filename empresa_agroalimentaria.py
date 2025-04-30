@@ -26,7 +26,7 @@ class Producto:
         self.peso = peso
         self.medida = medida
 
-    def __str__(self): # Imprimimos los datos mas detalladamente
+    def __str__(self): 
         return f"Caducidad: {self.fecha_caducidad} | Lote: {self.numero_lote} | Peso: {self.peso} kg | Medida: {self.medida}"
 
 class Frescos(Producto):
@@ -38,6 +38,8 @@ class Frescos(Producto):
     def __str__(self):  # Imprimimos los datos mas detalladamente
         return f"{super().__str__()} | Envasado: {self.fecha_envasado} | Origen: {self.pais_origen}"
 
+    def calcular_coste_envio(self):  # Implemento método de calcular coste de envio
+        return self.peso * 3
     
 class Refrigerados(Producto):
     def __init__(self, fecha_caducidad, numero_lote, codigo_organismo_supervision):
@@ -47,13 +49,19 @@ class Refrigerados(Producto):
     def __str__(self):  # Imprimimos los datos mas detalladamente
         return f"{super().__str__()} | Código supervisión: {self.codigo_organismo_supervision}"
     
+    def calcular_coste_envio(self):  # Implemento método de calcular coste de envio
+        return super().calcular_coste_envio() + 2
+    
 class Congelados(Producto):
     def __init__(self, fecha_caducidad, numero_lote, temperatura_recomendada):
         super().__init__(fecha_caducidad, numero_lote)
         self.temperatura_recomendada = temperatura_recomendada
 
-    def __str__(self):
-        return super().__str__()
+    def __str__(self):  # Imprimimos los datos mas detalladamente
+        return f"{super().__str__()} | Temp. recomendada: {self.temperatura_recomendada}°C"
+    
+    def calcular_coste_envio(self):  # Implemento método de calcular coste de envio
+        return super().calcular_coste_envio() + 5
 
 def main():
     productos_frescos = []
